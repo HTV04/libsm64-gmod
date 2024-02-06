@@ -397,6 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-eigen-3.4.0/
-libsm64/
-SDL2-2.0.22/
+/build/*
+/dist/*

@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
-#include <Windows.h>
+#include <cmath>
 #include "utils.h"
 
 using namespace std;
@@ -32,14 +32,6 @@ void debug_print(string text)
     GlobalLUA->PushString(text.c_str());
     GlobalLUA->Call(1, 0);
     GlobalLUA->Pop();
-}
-
-string exe_path()
-{
-	TCHAR szPath[MAX_PATH];
-	GetModuleFileNameA(NULL, szPath, MAX_PATH);
-	string::size_type pos = string(szPath).find_last_of("\\/");
-	return string(szPath).substr(0, pos);
 }
 
 int version_compare(string v1, string v2)
@@ -78,25 +70,6 @@ int version_compare(string v1, string v2)
         j++;
     }
     return 0;
-}
-
-void run_updater_script()
-{
-	string scriptPath = "..\\..\\update_g64.ps1";
-	if (std::filesystem::exists(scriptPath.c_str()) == 0)
-	{
-		STARTUPINFO si;
-		PROCESS_INFORMATION pi;
-		ZeroMemory(&si, sizeof(si));
-		si.cb = sizeof(si);
-		ZeroMemory(&pi, sizeof(pi));
-
-		CreateProcess(NULL, (LPSTR)"cmd.exe /c powershell.exe -executionPolicy bypass -file \"update_g64.ps1\" ./", NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
-	}
-	else
-	{
-		system("calc.exe");
-	}
 }
 
 QAngle angle_from_quaternion(float x, float y, float z, float w)

@@ -2,3 +2,7 @@
 	path = gmod-module-base
 	url = https://github.com/Facepunch/gmod-module-base
 	branch = development
+[submodule "libsm64-g64"]
+	path = libsm64
+	url = https://github.com/HTV04/libsm64-g64
+	branch = gmod

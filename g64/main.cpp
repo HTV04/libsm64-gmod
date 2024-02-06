@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
+#include <iterator>
 #if defined(_WIN32) && !defined(WIN32)
 #define WIN32
 #endif
@@ -10,6 +12,9 @@
 #include <Windows.h>
 #include <direct.h>
 #define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
 #endif
 
 #include <SDL.h>
@@ -292,7 +297,7 @@ LUA_FUNCTION(LoadMapCache)
 	}
 
 	LUA->Pop();
-	
+
 	LUA->PushBool(true);
 	return 1;
 }
@@ -551,7 +556,7 @@ LUA_FUNCTION(SurfaceObjectMove)
 	//fixedAngle.z = angle.z;
 
 	//float4 quat = quatFromAngle(fixedAngle);
-	
+
 	//double deg2rad = (3.14159265358979323846 / 180.0);
 	//double rad2deg = (180.0 / 3.14159265358979323846);
 	//
@@ -867,7 +872,7 @@ LUA_FUNCTION(MarioAnimTick)
 
 
 	int refOffset = bufferIndex * 8;
-	
+
 	SM64AnimInfo animInfo;
 	LUA->GetField(-1, "animID");
 	animInfo.animID = LUA->GetNumber();
@@ -893,7 +898,7 @@ LUA_FUNCTION(MarioAnimTick)
 	LUA->GetField(-1, "rotation");
 	QAngle angle = LUA->GetAngle();
 	LUA->Pop();
-	
+
 	LUA->Pop();
 
 
@@ -1085,7 +1090,7 @@ LUA_FUNCTION(MarioDelete)
 		LUA->ReferenceFree(mInfos[marioId].animInfoRef);
 		mInfos.erase(marioId);
 	}
-	
+
 	return 1;
 }
 
@@ -1497,9 +1502,6 @@ GMOD_MODULE_CLOSE()
 	LUA->Pop();
 
 	gamepad_close();
-
-	if(autoUpdatesOn && needsToUpdate)
-		run_updater_script();
 
 	return 0;
 }

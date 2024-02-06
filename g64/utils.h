@@ -2,7 +2,12 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <cstdio>
+#define sprintf_s(buf, ...) std::snprintf((buf), sizeof(buf), __VA_ARGS__)
+#endif
 
 #include "GarrysMod/Lua/Interface.h"
 extern "C"
@@ -39,9 +44,7 @@ extern ILuaBase* GlobalLUA;
     GlobalLUA->Pop(); \
 } while(0)
 
-string exe_path();
 int version_compare(string v1, string v2);
-void run_updater_script();
 QAngle angle_from_quaternion(float x, float y, float z, float w);
 float4 quatFromAngle(QAngle ang);
 
